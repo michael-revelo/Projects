@@ -94,7 +94,7 @@ with last_touch as (SELECT date,
                                    CROSS JOIN (SELECT distinct super_group FROM channel) as mcg
                                    WHERE date <= dateadd('day', -1, current_date())) 
 
--- Find all saas enrollments from payment_plan_histories_analytics minus internal accounts 
+-- Find all saas enrollments from ppha minus internal accounts 
 
     ,enrollments as (SELECT * FROM
                     (SELECT ppha.id,
@@ -137,7 +137,7 @@ with last_touch as (SELECT date,
                                                 WHERE at.id is not null)
                                           WHERE rank = 1) as channel on channel.id = e.id and channel.enrollment_date = e.enrollment_datetime::date)
 
--- Find all movetofree accounts from payment_plan_histories_analytics minus internal accounts 
+-- Find all movetofree accounts from ppha minus internal accounts 
 
     ,retention as (SELECT * FROM
                   (SELECT ppha.id, 
@@ -418,7 +418,7 @@ with last_touch as (SELECT date,
                       FROM (SELECT paymentdate,
                                    organization_id,
                                    ach_amount
-                            FROM "HCP_INTEGRATIONS"."PROD_SLAVE_ANALYTICS"."PAYMENTS_BY_ORGDAY")
+                            FROM pbo)
                             WHERE ach_amount > 1)
                 
 -----Begin union of all the pieces-----
